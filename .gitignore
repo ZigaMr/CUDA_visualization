@@ -1,0 +1,9 @@
+# For Node
+frontend/node_modules/
+frontend/build/
+
+# For Go
+backend/vendor/
+backend/*.exe
+backend/*.test
+
