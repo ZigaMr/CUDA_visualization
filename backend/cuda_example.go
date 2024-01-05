@@ -1,17 +1,31 @@
 package main
 
+/*
+#include <stdlib.h>
+#include <stdio.h>
+#include <cuda.h>
+
+void printPath() {
+    const char* path = getenv("PATH");
+    if (path == NULL) {
+        printf("PATH is NULL\n");
+    } else {
+        printf("PATH from CGo: %s\n", path);
+    }
+}
+*/
+import "C"
 import (
-    "fmt"
-    "gonum.org/v1/gonum/floats"
-    "gonum.org/v1/gonum/stat"
+	"fmt"
+	"os"
 )
 
 func main() {
-    data := make([]float64, 1000)
-    // Run your CUDA code to fill 'data' array with values
+	// Print PATH using Go
+	path := os.Getenv("PATH")
+	fmt.Println("PATH from Go:", path)
 
-    // Print some statistics
-    fmt.Println("Mean:", stat.Mean(data, nil))
-    fmt.Println("StdDev:", stat.StdDev(data, nil))
+	// Print PATH using CGo
+	C.printPath()
 }
 
