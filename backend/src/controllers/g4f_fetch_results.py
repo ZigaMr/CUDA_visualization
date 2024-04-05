@@ -9,4 +9,6 @@ response = client.chat.completions.create(
                 "content":
                   ' '.join(sys.argv[1:])}],
 )
-sys.stdout.write(response.choices[0].message.content)
+
+result = response.choices[0].message.content.split("```")[1]
+sys.stdout.write(result)
