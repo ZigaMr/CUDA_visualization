@@ -1,0 +1,47 @@
+/* frontend/src/pages/Dashboard.css */
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #0a0a0a; /* Darker background color */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-results-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-container {
+    margin-bottom: 20px;
+  }
+  
+  .results-container {
+    margin-top: 20px;
+  }
+  
+  /* Styling for hover effect */
+  .submit-button:hover {
+    animation: hoverAnimation 0.3s ease;
+  }
+  
+  @keyframes hoverAnimation {
+    0% {
+      transform: translateY(0);
+    }
+    25% {
+      transform: translateY(-3px);
+    }
+    50% {
+      transform: translateY(0);
+    }
+    75% {
+      transform: translateY(-3px);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+  
