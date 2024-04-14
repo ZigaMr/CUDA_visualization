@@ -22,8 +22,12 @@ app.post('/runPythonScript', (req, res) => {
       console.error(`Error: ${stderr}`);
       return res.status(500).send(stderr);
     }
-    console.log(`Output: ${stdout}`);
-    res.send(stdout);
+      // Split the stdout into lines
+    const lines = stdout.split('\n');
+    // Join the lines, skipping the first two lines
+    const modifiedOutput = lines.slice(2).join('\n');
+    console.log(`Output: ${modifiedOutput}`);
+    res.send(modifiedOutput);
   });
 });
 
