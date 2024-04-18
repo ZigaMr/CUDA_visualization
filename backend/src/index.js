@@ -44,6 +44,21 @@ const createFileIfNotExists = async (filePath) => {
   }
 };
 
+// Function to execute and time the script
+const executeScript = (scriptPath, language, res) => {
+  const startTime = process.hrtime();
+  exec(scriptPath, (error, stdout, stderr) => {
+    if (error) {
+      console.error('Error:', error);
+      res.status(500).json({ error: 'Script execution failed' });
+      return;
+    }
+    const elapsedTime = process.hrtime(startTime);
+    console.log(`${language} script execution time: ${elapsedTime[0]}s ${elapsedTime[1] / 1000000}ms`);
+    res.status(200).json({ message: `${language} script executed successfully` });
+    return elapsedTime;
+  });
+};
 
 // Endpoint to handle saving code based on language
 app.post('/save/:language', async (req, res) => {
@@ -55,15 +70,19 @@ app.post('/save/:language', async (req, res) => {
   switch(language) {
     case 'rust':
       filePath = 'rust/file.rs'; // Replace 'path/to/rust/file' with the actual path for Rust
+      scriptPath = 'cd rust && rustc file.rs -o my_rust_program && ./my_rust_program'; // Replace 'path/to/rust/file' with the actual path for Rust
       break;
     case 'cuda':
       filePath = 'cuda/file.cu'; // Replace 'path/to/cuda/file' with the actual path for CUDA
+      scriptPath = 'cd cuda && nvcc file.cu'; // Replace 'path/to/cuda/file' with the actual path for CUDA
       break;
     case 'python':
       filePath = 'python/file.py'; // Replace 'path/to/python/file' with the actual path for Python
+      scriptPath = 'cd python && poetry run python file.py'; // Replace 'path/to/python/file' with the actual path for Python
       break;
     case 'golang':
       filePath = 'golang/file.go'; // Replace 'path/to/golang/file' with the actual path for GoLang
+      scriptPath = 'cd golang && go run file.go'; // Replace 'path/to/golang/file' with the actual path for GoLang
       break;
     default:
       return res.status(400).json({ error: 'Invalid language' });
@@ -75,7 +94,9 @@ app.post('/save/:language', async (req, res) => {
     // Write the 'result' data to the file specified by 'filePath'
     await fs.writeFile(filePath, result);
     // Respond with success message
-    res.status(200).json({ message: `Code saved successfully for ${language}` });
+    elapsedTime = executeScript(scriptPath, language, res);
+    res.send(elapsedTime);
+
   } catch (error) {
     // Handle error, such as showing an error message or logging
     console.error('Error:', error);
